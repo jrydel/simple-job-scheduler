@@ -16,9 +16,9 @@ public class SchedulerImpl implements Scheduler {
     private final ScheduledFuture<?> taskCheckerFuture;
     private final TaskChecker taskChecker;
 
-    public SchedulerImpl(int corePoolSize, Duration checkerDuration) {
+    public SchedulerImpl(int corePoolSize, Duration checkerDuration, TaskChecker.TaskCheckerListener taskCheckerListener) {
         this.executor = new ScheduledThreadPoolExecutor(corePoolSize, new SimpleThreadFactory(), new ThreadPoolExecutor.AbortPolicy());
-        this.taskChecker = new TaskChecker(map, checkerDuration);
+        this.taskChecker = new TaskChecker(map, checkerDuration, taskCheckerListener);
         this.taskCheckerFuture = this.executor.scheduleWithFixedDelay(this.taskChecker, 0, checkerDuration.toMillis(), TimeUnit.MILLISECONDS);
     }
 

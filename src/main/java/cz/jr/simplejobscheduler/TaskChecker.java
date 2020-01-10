@@ -16,21 +16,13 @@ public class TaskChecker extends Task {
 
     private final Map<String, TaskData> map;
     private final Duration delay;
+    private final TaskCheckerListener taskCheckerListener;
 
-    public TaskChecker(Map<String, TaskData> map, Duration delay) {
-        super("TaskChecker", Duration.ofMinutes(2), null, new TaskListener() {
-            @Override
-            public void beforeExecution() {
-                LOG.info("Starting task checker.");
-            }
-
-            @Override
-            public void afterExecution() {
-                LOG.info("Terminating task checker.");
-            }
-        });
+    public TaskChecker(Map<String, TaskData> map, Duration delay, TaskCheckerListener taskCheckerListener) {
+        super("TaskChecker", delay, null, new EmptyTaskListener());
         this.map = map;
         this.delay = delay;
+        this.taskCheckerListener = taskCheckerListener;
     }
 
     @Override
@@ -39,8 +31,12 @@ public class TaskChecker extends Task {
             long taskDelay = taskData.getScheduledFuture().getDelay(TimeUnit.MILLISECONDS);
             Duration maxExecutionTime = taskData.getTask().getMaxExecutionTime();
             if (maxExecutionTime.toMillis() + taskDelay < 0) {
-                LOG.error(String.format("Task: %s has exceeded: %d, execution time: %s.", taskData.getTask().getName(), taskData.getTask().getMaxExecutionTime().toMillis(), taskDelay));
+                taskCheckerListener.onTaskExceedation(taskData.getTask().getName(), Duration.ofMillis(Math.abs(taskDelay)), taskData.getTask().getMaxExecutionTime());
             }
         });
+    }
+
+    public interface TaskCheckerListener {
+        void onTaskExceedation(String name, Duration executionTime, Duration maxExecutionTime);
     }
 }

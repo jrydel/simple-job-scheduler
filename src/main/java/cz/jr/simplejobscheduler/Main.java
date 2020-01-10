@@ -13,7 +13,7 @@ public class Main {
     private static final Logger LOG = LogManager.getLogger(Main.class);
 
     public static void main(String[] args) {
-        SchedulerImpl scheduler = new SchedulerImpl(4, Duration.ofSeconds(20));
+        SchedulerImpl scheduler = new SchedulerImpl(4, Duration.ofSeconds(5), (name, executionTime, maxExecutionTime) -> LOG.error(String.format("Task: %s exceeded maxExecutionTime: %d, executionTime: %d", name, maxExecutionTime.toMillis(), executionTime.toMillis())));
 
         scheduler.scheduleTask(new Task("Task1", Duration.ofSeconds(5), Duration.ofSeconds(10), new EmptyTaskListener()) {
             @Override
