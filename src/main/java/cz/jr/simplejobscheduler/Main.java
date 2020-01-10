@@ -15,7 +15,7 @@ public class Main {
     public static void main(String[] args) {
         SchedulerImpl scheduler = new SchedulerImpl(4, Duration.ofSeconds(5), (name, executionTime, maxExecutionTime) -> LOG.error(String.format("Task: %s exceeded maxExecutionTime: %d, executionTime: %d", name, maxExecutionTime.toMillis(), executionTime.toMillis())));
 
-        scheduler.scheduleTask(new Task("Task1", Duration.ofSeconds(5), Duration.ofSeconds(10), new EmptyTaskListener()) {
+        scheduler.scheduleTask(new Task("Task1", Duration.ofMillis(0), Duration.ofSeconds(5), Duration.ofSeconds(10), new EmptyTaskListener()) {
             @Override
             protected void execute() {
                 try {
@@ -26,7 +26,7 @@ public class Main {
             }
         });
 
-        scheduler.scheduleTask(new Task("Task2", Duration.ofSeconds(3), Duration.ofSeconds(10), new EmptyTaskListener()) {
+        scheduler.scheduleTask(new Task("Task2", Duration.ofMillis(2), Duration.ofSeconds(3), Duration.ofSeconds(5), new EmptyTaskListener()) {
             @Override
             protected void execute() {
                 try {

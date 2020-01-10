@@ -24,24 +24,22 @@ public class SchedulerImpl implements Scheduler {
 
     @Override
     public void scheduleTask(Task task) {
-        ScheduledFuture<?> future = executor.scheduleWithFixedDelay(task, 0, task.getExecutionRate().toMillis(), TimeUnit.MILLISECONDS);
+        ScheduledFuture<?> future = executor.scheduleWithFixedDelay(task, task.getInitialDelay().toMillis(), task.getExecutionRate().toMillis(), TimeUnit.MILLISECONDS);
         map.put(UUID.randomUUID().toString(), new TaskData(task, future));
     }
 
     @Override
     public SchedulerMetadata getMetaData() {
         SchedulerMetadata schedulerMetadata = new SchedulerMetadata();
-        map.forEach((key, taskData) -> {
-            schedulerMetadata.getTaskMetaDataList().add(
-                    new SchedulerMetadata.TaskMetaData(
-                            taskData.getTask().getName(),
-                            isExecuted(taskData.getScheduledFuture()),
-                            taskData.getTask().getLastExecutionTime(),
-                            taskData.getTask().getLastCompletionTime(),
-                            taskData.getTask().isExecutedWithError()
-                    )
-            );
-        });
+        map.forEach((key, taskData) -> schedulerMetadata.getTaskMetaDataList().add(
+                new SchedulerMetadata.TaskMetaData(
+                        taskData.getTask().getName(),
+                        isExecuted(taskData.getScheduledFuture()),
+                        taskData.getTask().getLastExecutionTime(),
+                        taskData.getTask().getLastCompletionTime(),
+                        taskData.getTask().isExecutedWithError()
+                )
+        ));
         schedulerMetadata.getTaskMetaDataList().add(new SchedulerMetadata.TaskMetaData(
                 taskChecker.getName(),
                 isExecuted(taskCheckerFuture),

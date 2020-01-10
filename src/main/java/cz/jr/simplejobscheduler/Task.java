@@ -14,6 +14,7 @@ public abstract class Task implements Runnable {
     private static final Logger LOG = LogManager.getLogger(Task.class);
 
     private final String name;
+    private final Duration initialDelay;
     private final Duration executionRate;
     private final Duration maxExecutionTime;
     private final TaskListener taskListener;
@@ -22,8 +23,9 @@ public abstract class Task implements Runnable {
     private Instant lastCompletionTime;
     private boolean executedWithError = false;
 
-    public Task(String name, Duration executionRate, Duration maxExecutionTime, TaskListener taskListener) {
+    public Task(String name, Duration initialDelay, Duration executionRate, Duration maxExecutionTime, TaskListener taskListener) {
         this.name = name;
+        this.initialDelay = initialDelay;
         this.executionRate = executionRate;
         this.maxExecutionTime = maxExecutionTime;
         this.taskListener = taskListener;
@@ -46,8 +48,16 @@ public abstract class Task implements Runnable {
 
     protected abstract void execute();
 
+    public static Logger getLOG() {
+        return LOG;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public Duration getInitialDelay() {
+        return initialDelay;
     }
 
     public Duration getExecutionRate() {

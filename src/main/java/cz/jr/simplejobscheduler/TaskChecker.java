@@ -19,7 +19,7 @@ public class TaskChecker extends Task {
     private final TaskCheckerListener taskCheckerListener;
 
     public TaskChecker(Map<String, TaskData> map, Duration delay, TaskCheckerListener taskCheckerListener) {
-        super("TaskChecker", delay, null, new EmptyTaskListener());
+        super("TaskChecker", Duration.ofMillis(0), delay, null, new EmptyTaskListener());
         this.map = map;
         this.delay = delay;
         this.taskCheckerListener = taskCheckerListener;
