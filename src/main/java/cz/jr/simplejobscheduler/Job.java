@@ -48,10 +48,6 @@ public abstract class Job implements Runnable {
 
     protected abstract void execute();
 
-    public static Logger getLOG() {
-        return LOG;
-    }
-
     public String getName() {
         return name;
     }
