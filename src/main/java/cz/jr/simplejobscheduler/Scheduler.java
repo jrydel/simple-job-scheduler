@@ -5,7 +5,7 @@ package cz.jr.simplejobscheduler;
  */
 public interface Scheduler {
 
-    void scheduleTask(Task task);
+    void scheduleTask(Job job);
 
     SchedulerMetadata getMetaData();
 }

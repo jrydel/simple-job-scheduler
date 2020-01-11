@@ -9,40 +9,40 @@ import java.time.Instant;
 /**
  * Created by Jiří Rýdel on 1/10/20, 9:12 PM
  */
-public abstract class Task implements Runnable {
+public abstract class Job implements Runnable {
 
-    private static final Logger LOG = LogManager.getLogger(Task.class);
+    private static final Logger LOG = LogManager.getLogger(Job.class);
 
     private final String name;
     private final Duration initialDelay;
     private final Duration executionRate;
     private final Duration maxExecutionTime;
-    private final TaskListener taskListener;
+    private final JobListener jobListener;
 
     private Instant lastExecutionTime;
     private Instant lastCompletionTime;
     private boolean executedWithError = false;
 
-    public Task(String name, Duration initialDelay, Duration executionRate, Duration maxExecutionTime, TaskListener taskListener) {
+    public Job(String name, Duration initialDelay, Duration executionRate, Duration maxExecutionTime, JobListener jobListener) {
         this.name = name;
         this.initialDelay = initialDelay;
         this.executionRate = executionRate;
         this.maxExecutionTime = maxExecutionTime;
-        this.taskListener = taskListener;
+        this.jobListener = jobListener;
     }
 
     @Override
     public void run() {
-        taskListener.beforeExecution();
+        jobListener.beforeExecution();
         try {
             lastExecutionTime = Instant.now();
             execute();
         } catch (Throwable t) {
-            LOG.error(String.format("Error in task: %s", name), t);
+            LOG.error(String.format("Error in job: %s", name), t);
             executedWithError = true;
         } finally {
             lastCompletionTime = Instant.now();
-            taskListener.afterExecution();
+            jobListener.afterExecution();
         }
     }
 
@@ -68,8 +68,8 @@ public abstract class Task implements Runnable {
         return maxExecutionTime;
     }
 
-    public TaskListener getTaskListener() {
-        return taskListener;
+    public JobListener getJobListener() {
+        return jobListener;
     }
 
     public Instant getLastExecutionTime() {

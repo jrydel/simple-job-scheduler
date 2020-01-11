@@ -5,18 +5,18 @@ import java.util.concurrent.ScheduledFuture;
 /**
  * Created by Jiří Rýdel on 1/10/20, 9:09 PM
  */
-public class TaskData {
+public class JobData {
 
-    private final Task task;
+    private final Job job;
     private final ScheduledFuture<?> scheduledFuture;
 
-    public TaskData(Task task, ScheduledFuture<?> scheduledFuture) {
-        this.task = task;
+    public JobData(Job job, ScheduledFuture<?> scheduledFuture) {
+        this.job = job;
         this.scheduledFuture = scheduledFuture;
     }
 
-    public Task getTask() {
-        return task;
+    public Job getJob() {
+        return job;
     }
 
     public ScheduledFuture<?> getScheduledFuture() {

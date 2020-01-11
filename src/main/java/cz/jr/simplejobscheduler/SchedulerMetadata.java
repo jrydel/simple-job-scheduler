@@ -9,17 +9,17 @@ import java.util.List;
  */
 public class SchedulerMetadata {
 
-    private List<TaskMetaData> taskMetaDataList = new ArrayList<>();
+    private List<JobMetadata> jobMetadataList = new ArrayList<>();
 
-    public List<TaskMetaData> getTaskMetaDataList() {
-        return taskMetaDataList;
+    public List<JobMetadata> getJobMetadataList() {
+        return jobMetadataList;
     }
 
-    public void setTaskMetaDataList(List<TaskMetaData> taskMetaDataList) {
-        this.taskMetaDataList = taskMetaDataList;
+    public void setJobMetadataList(List<JobMetadata> jobMetadataList) {
+        this.jobMetadataList = jobMetadataList;
     }
 
-    public static class TaskMetaData {
+    public static class JobMetadata {
 
         private final String name;
         private final boolean isRunning;
@@ -27,7 +27,7 @@ public class SchedulerMetadata {
         private final Instant lastCompletionTime;
         private final boolean executedWithError;
 
-        public TaskMetaData(String name, boolean isRunning, Instant lastExecutionTime, Instant lastCompletionTime, boolean executedWithError) {
+        public JobMetadata(String name, boolean isRunning, Instant lastExecutionTime, Instant lastCompletionTime, boolean executedWithError) {
             this.name = name;
             this.isRunning = isRunning;
             this.lastExecutionTime = lastExecutionTime;
@@ -54,23 +54,5 @@ public class SchedulerMetadata {
         public boolean isExecutedWithError() {
             return executedWithError;
         }
-
-        @Override
-        public String toString() {
-            return "TaskMetaData{" +
-                    "name='" + name + '\'' +
-                    ", isRunning=" + isRunning +
-                    ", lastExecutionTime=" + lastExecutionTime +
-                    ", lastCompletionTime=" + lastCompletionTime +
-                    ", executedWithError=" + executedWithError +
-                    '}';
-        }
-    }
-
-    @Override
-    public String toString() {
-        return "SchedulerMetadata{" +
-                "taskMetaDataList=" + taskMetaDataList +
-                '}';
     }
 }
