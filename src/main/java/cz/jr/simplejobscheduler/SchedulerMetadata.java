@@ -25,13 +25,15 @@ public class SchedulerMetadata {
         private final boolean isRunning;
         private final Instant lastExecutionTime;
         private final Instant lastCompletionTime;
+        private final Instant nextExecutionTime;
         private final boolean executedWithError;
 
-        public JobMetadata(String name, boolean isRunning, Instant lastExecutionTime, Instant lastCompletionTime, boolean executedWithError) {
+        public JobMetadata(String name, boolean isRunning, Instant lastExecutionTime, Instant lastCompletionTime, Instant nextExecutionTime, boolean executedWithError) {
             this.name = name;
             this.isRunning = isRunning;
             this.lastExecutionTime = lastExecutionTime;
             this.lastCompletionTime = lastCompletionTime;
+            this.nextExecutionTime = nextExecutionTime;
             this.executedWithError = executedWithError;
         }
 
@@ -49,6 +51,10 @@ public class SchedulerMetadata {
 
         public Instant getLastCompletionTime() {
             return lastCompletionTime;
+        }
+
+        public Instant getNextExecutionTime() {
+            return nextExecutionTime;
         }
 
         public boolean isExecutedWithError() {

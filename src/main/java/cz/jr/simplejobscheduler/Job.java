@@ -21,6 +21,7 @@ public abstract class Job implements Runnable {
 
     private Instant lastExecutionTime;
     private Instant lastCompletionTime;
+    private Instant nextExecutionTime;
     private boolean executedWithError = false;
 
     public Job(String name, Duration initialDelay, Duration executionRate, Duration maxExecutionTime, JobListener jobListener) {
@@ -42,6 +43,7 @@ public abstract class Job implements Runnable {
             executedWithError = true;
         } finally {
             lastCompletionTime = Instant.now();
+            nextExecutionTime = lastCompletionTime.plus(executionRate);
             jobListener.afterExecution();
         }
     }
@@ -82,6 +84,14 @@ public abstract class Job implements Runnable {
 
     public void setLastCompletionTime(Instant lastCompletionTime) {
         this.lastCompletionTime = lastCompletionTime;
+    }
+
+    public Instant getNextExecutionTime() {
+        return nextExecutionTime;
+    }
+
+    public void setNextExecutionTime(Instant nextExecutionTime) {
+        this.nextExecutionTime = nextExecutionTime;
     }
 
     public boolean isExecutedWithError() {

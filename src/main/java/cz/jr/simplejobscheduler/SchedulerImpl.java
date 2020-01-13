@@ -23,7 +23,7 @@ public class SchedulerImpl implements Scheduler {
     }
 
     @Override
-    public void scheduleTask(Job job) {
+    public void scheduleJob(Job job) {
         ScheduledFuture<?> future = executor.scheduleWithFixedDelay(job, job.getInitialDelay().toMillis(), job.getExecutionRate().toMillis(), TimeUnit.MILLISECONDS);
         map.put(UUID.randomUUID().toString(), new JobData(job, future));
     }
@@ -37,6 +37,7 @@ public class SchedulerImpl implements Scheduler {
                         isExecuted(jobData.getScheduledFuture()),
                         jobData.getJob().getLastExecutionTime(),
                         jobData.getJob().getLastCompletionTime(),
+                        jobData.getJob().getNextExecutionTime(),
                         jobData.getJob().isExecutedWithError()
                 )
         ));
@@ -45,6 +46,7 @@ public class SchedulerImpl implements Scheduler {
                 isExecuted(jobCheckerFuture),
                 jobChecker.getLastExecutionTime(),
                 jobChecker.getLastCompletionTime(),
+                jobChecker.getNextExecutionTime(),
                 jobChecker.isExecutedWithError()
         ));
         return schedulerMetadata;
